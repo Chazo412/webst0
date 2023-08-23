@@ -23,4 +23,3 @@ urlpatterns = [
     path('', views.sample, name='sample'),
 ]
 
-#push
