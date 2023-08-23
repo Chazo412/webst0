@@ -1,0 +1,208 @@
+
+*{
+  padding: 0;
+  margin: 0;
+}
+
+.bottom-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 30px;
+  }
+
+.navbar {
+    background-color: rgba(255, 255, 255, 0.65);
+  }
+
+  .navbar-content {
+    display: flex;
+    align-items: center;
+  }
+
+  .navbar-nav .nav-link {
+    color: #000000;
+    font-size: 20px;
+  }
+
+  .navbar-brand {
+    color: #000000 !important;
+  }
+
+  .navbar-nav .nav-link.active {
+    color: #53b6a4 !important;
+  }
+
+  .navbar-toggler-icon {
+    background-image: none !important; /* Remove the default toggle icon */
+  }
+
+  .dropdown-toggle::after {
+    display: none !important; /* Hide the dropdown arrow */
+  }
+
+  body,
+  html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: linear-gradient(90deg, rgba(205, 255, 216, 100) 0%, rgba(148, 185, 255, 100) 100%) !important;
+  }
+  
+  .page-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure the container takes at least the viewport height */
+}
+
+.content {
+  flex: 1; /* Allow the content to grow and fill the remaining space */
+  padding-bottom: 60px; /* Adjust the padding to make space for the footer */
+}
+
+  footer {
+    /* background-color: #343a40; */
+    color:  #000000;
+    text-align: center;
+    padding: 10px 0;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .custom-button0 {
+    background-color: rgba(52, 58, 64, 1);
+    border-color: rgba(52, 58, 64, 1); 
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.margin-container {
+    margin: 0 15px; /* Adjust the margin values as needed */
+}
+
+/* Adjust the width of the select dropdown */
+.form-select {
+    width: 75%; /* Set the width to your desired value */
+}
+
+#download-btn{
+  width: 100px;
+  color: black;
+  padding: 12px;
+  color: white;
+  background-color: red;
+  border-radius: 5px;
+  text-decoration: none;
+  box-shadow: 2px 2px 5px gray;
+  font-style: normal;
+  cursor: pointer;
+  letter-spacing: 1px;
+  font-family: inherit;
+  border: 1px solid red;
+  transition: 0.3s ease-out;
+  z-index: -1;
+}
+
+#download-btn:hover{
+  color:black;
+  background-color:  white;
+  border: 1px solid  lightgray;
+  transform: scale(1.1);
+}
+
+.errors{
+  width: 400px;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items:center;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: 5px;
+  padding: 12px;
+  color: red;
+  background-color: #ffe6e6;
+  border: 1px solid red;
+}
+
+.success{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  color: black;
+}
+
+#download-btn:hover{
+  color:black;
+  background-color:  white;
+  border: 1px solid  lightgray;
+  transform: scale(1.1);
+}
+#form{
+  width: 600px;
+  height: 40vh;
+  margin: auto;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 20px;
+}
+
+#form h1{
+  font-style: italic;
+  text-shadow: 1px 1px darkgray;
+}
+
+#form input{
+  width: 300px;
+  padding: 14px;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+  border: 1px solid lightgray;
+  font-family: inherit;
+  outline: none;
+  box-shadow: 2px 2px 5px gray;
+}
+
+#form button{
+  padding: 14px;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  border: 1px solid lightgray;
+  background-color: whitesmoke;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: 2px 3px 5px gray;
+  transition: 0.3s ease-out;
+}
+
+#form button:hover{
+  color:white;
+  background-color:  red;
+  border: 1px solid  red;
+  transform: scale(1.1);
+}
+
+
+@media(max-width:768px){
+  .bottom-container{
+    width: 90%;
+    margin: auto;
+  }
+
+  #form, .success{
+    text-align: center;
+    width: 100%;
+  }
+}
+
+@media(max-width:480px){
+  #form input{
+    width: 50%;
+  }
+}
