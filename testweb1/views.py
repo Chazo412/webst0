@@ -1,3 +1,5 @@
+
+
 from django.shortcuts import render
 from django.http import HttpResponse
 from testweb1.forms import audioAccept
@@ -30,3 +32,41 @@ def sample(request):
     
     context = {'form': form}
     return render(request, 'uiDesign.html', context)
+
+
+
+from django.http import JsonResponse
+from .forms import VideoIdForm  # Import your VideoIdForm
+import requests
+
+def convert_mp3(request):
+    if request.method == 'POST':
+        form = VideoIdForm(request.POST)
+        if form.is_valid():
+            video_id = form.cleaned_data['video_id']
+            
+            if not video_id:
+                return render(request, 'uiDesign.html', {'success': False, 'message': 'Please enter a video ID'})
+            
+            api_key = '618c641402msh87f3cbb65fc2a64p16e8f2jsn2685ae2145b5'
+            api_host = 'youtube-mp36.p.rapidapi.com'
+            
+            response = requests.get(f'https://youtube-mp36.p.rapidapi.com/dl?id={video_id}', 
+                                    headers={"x-rapidapi-key": api_key, "x-rapidapi-host": api_host})
+            
+            fetch_response = response.json()
+            
+            if fetch_response.get('status') == 'ok':
+                return render(request, 'uiDesign.html', {'success': True, 
+                                                        'song_title': fetch_response.get('title'), 
+                                                        'song_link': fetch_response.get('link')})
+            else:
+                return render(request, 'uiDesign.html', {'success': False, 'message': fetch_response.get('msg')})
+    # else:
+    #     form = VideoIdForm()
+
+    return render(request, 'uiDesign.html', {'form': form})
+
+
+
+             
