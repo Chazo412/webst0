@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block conversionactive %} active {% endblock conversionactive %}
+{% block title %} Conversion {% endblock title %}
+
+{% load static %}
+
+{% block body %}
+<style>
+.custom-button0 {
+    background-color: rgba(52, 58, 64, 1);
+    border-color: rgba(52, 58, 64, 1); 
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.margin-container {
+    margin: 0 15px; /* Adjust the margin values as needed */
+}
+
+/* Adjust the width of the select dropdown */
+.form-select {
+    width: 75%; /* Set the width to your desired value */
+}
+</style>
+
+<div class="container-fluid margin-container" style="padding-top: 120px;">
+    <h2>Upload Audio File</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary custom-button0">Upload File</button>
+    </form>
+
+    <div class="container-fluid" style="padding-top: 70px;"></div>
+    <h2>Select Your Ai</h2>
+    <select class="form-select">
+        <option value="file1">Spongebob</option>
+        <option value="file2">Patrick</option>
+        <option value="file3">Squidward</option>
+        <option value="file4">Plankton</option>
+        <option value="file5">Mr.Krabs</option>
+        <option value="file6">Madea</option>
+        <!-- Add more options as needed -->
+    </select>
+</div>
+{% endblock body %}
