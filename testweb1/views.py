@@ -37,35 +37,6 @@ def sample(request):
     return render(request, 'uiDesign.html', context)
 
 
-
-
-def convert_mp3(request):
-
-    form = VideoIdForm(request.POST)
-    if form.is_valid():
-        video_id = form.cleaned_data['video_id']
-            
-        if not video_id:
-            return render(request, 'uiDesign.html', {'success': False, 'message': 'Please enter a video ID'})
-            
-        api_key = settings.YOUTUBE_API_KEY
-        api_host = settings.YOUTUBE_API_HOST
-            
-        response = requests.get(f'https://{api_host}/dl?id={video_id}', 
-                                headers={"x-rapidapi-key": api_key, "x-rapidapi-host": api_host})
-            
-        fetch_response = response.json()
-            
-        if fetch_response.get('status') == 'ok':
-            return render(request, 'uiDesign.html', {'success': True, 
-                                                    'song_title': fetch_response.get('title'), 
-                                                    'song_link': fetch_response.get('link')})
-        else:
-            return render(request, 'uiDesign.html', {'success': False, 'message': fetch_response.get('msg')})
-    
-
-
-
 def mp3_conversion(video_id, api_key, api_host):
     api_key = settings.API_KEY
     api_host = settings.API_HOST
