@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 
+#API key and API host for youtube to mp3 code
+YOUTUBE_API_KEY = '618c641402msh87f3cbb65fc2a64p16e8f2jsn2685ae2145b5'
+YOUTUBE_API_HOST = 'youtube-mp36.p.rapidapi.com'
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -127,3 +131,5 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+

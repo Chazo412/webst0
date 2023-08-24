@@ -1,5 +1,3 @@
-
-
 from django.shortcuts import render
 from django.http import HttpResponse
 from testweb1.forms import audioAccept
@@ -10,7 +8,6 @@ from .forms import VideoIdForm  # Import your VideoIdForm
 import requests
 import time
 import re
-
 
 def sample(request):
     if request.method == 'POST':
@@ -40,6 +37,32 @@ def sample(request):
     return render(request, 'uiDesign.html', context)
 
 
+
+
+def convert_mp3(request):
+
+    form = VideoIdForm(request.POST)
+    if form.is_valid():
+        video_id = form.cleaned_data['video_id']
+            
+        if not video_id:
+            return render(request, 'uiDesign.html', {'success': False, 'message': 'Please enter a video ID'})
+            
+        api_key = settings.YOUTUBE_API_KEY
+        api_host = settings.YOUTUBE_API_HOST
+            
+        response = requests.get(f'https://{api_host}/dl?id={video_id}', 
+                                headers={"x-rapidapi-key": api_key, "x-rapidapi-host": api_host})
+            
+        fetch_response = response.json()
+            
+        if fetch_response.get('status') == 'ok':
+            return render(request, 'uiDesign.html', {'success': True, 
+                                                    'song_title': fetch_response.get('title'), 
+                                                    'song_link': fetch_response.get('link')})
+        else:
+            return render(request, 'uiDesign.html', {'success': False, 'message': fetch_response.get('msg')})
+    
 
 
 
@@ -78,6 +101,7 @@ def convert_mp3(request):
     form = VideoIdForm(request.POST)
     if form.is_valid():
         youtube_url = form.cleaned_data['video_id']  # Get the YouTube URL from the form
+
 
         # Extract the video ID from the URL using the updated function
         video_id = extract_video_id(youtube_url)
