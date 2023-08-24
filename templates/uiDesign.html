@@ -2,30 +2,36 @@
 {% load static %}
 {% block conversionactive %} active {% endblock conversionactive %}
 {% block title %} Conversion {% endblock title %}
-
 {% block body %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 
 
-{% comment %} <div class="container-fluid margin-container" style="padding-top: 120px;">
-    <h2>Upload Audio File</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary custom-button0">Upload File</button>
-    </form> {% endcomment %}
-
+<div class="container-fluid margin-container" style="padding-top: 120px;">
+    <!-- Upload Audio File Form -->
+    {% if not success_upload %}
+    <div style="display: flex; justify-content: center; align-items: center; margin: 0; padding: 0;">
+        <div style="margin: 0; padding: 0;">
+            <h2 style="text-align: center; margin: 0; padding: 0;">Upload Audio File</h2>
+            <form method="post" enctype="multipart/form-data" style="text-align: center; margin: 0; padding: 0;">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary custom-button0">Upload File</button>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+    <div><h1 style="text-align: center" >OR</h1></div>
     <!-- YouTube 2 MP3 Converter Form -->
+    {% if not success_convert %}
     <form action="{% url 'convert_mp3' %}" method="POST" id="form">
         {% csrf_token %}
-        <h1><i class="fab fa-youtube"></i> YouTube 2 MP3 Converter</h1>
-        <h4>Enter the video ID</h4>
+        <h1><i class="fab fa-youtube"></i> Enter the Youtube URL</h1>
         <div>
-            <input type="text" name="video_id" placeholder="Video ID..."><button id="submit-btn">Convert</button>
+            <input type="text" name="video_id" placeholder="Youtube URL"><button id="submit-btn">Convert</button>
         </div>
     </form>
-    
+    {% endif %}
     <!-- Response Display -->
     <div class="bottom-container">
         {% if success %}

@@ -87,7 +87,7 @@
 }
 
 #download-btn{
-  width: 100px;
+  width: 150px;
   color: black;
   padding: 12px;
   color: white;
@@ -101,7 +101,7 @@
   font-family: inherit;
   border: 1px solid red;
   transition: 0.3s ease-out;
-  z-index: -1;
+  text-align: center;
 }
 
 #download-btn:hover{
