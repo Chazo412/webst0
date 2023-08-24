@@ -22,7 +22,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
-
+#youtube api
+API_KEY = '618c641402msh87f3cbb65fc2a64p16e8f2jsn2685ae2145b5'
+API_HOST = 'youtube-mp36.p.rapidapi.com'
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-6%02u6lfx4ce%h+r+#88!44-9+cr6g*e0d2wi82j27sj8p$p8w'
 
@@ -30,6 +32,7 @@ SECRET_KEY = 'django-insecure-6%02u6lfx4ce%h+r+#88!44-9+cr6g*e0d2wi82j27sj8p$p8w
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
 
 
 # Application definition
