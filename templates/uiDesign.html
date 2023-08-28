@@ -8,38 +8,113 @@
 <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 
 
-{% comment %} <div class="container-fluid margin-container" style="padding-top: 120px;">
-    <h2>Upload Audio File</h2>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary custom-button0">Upload File</button>
-    </form> {% endcomment %}
-
-    <!-- YouTube 2 MP3 Converter Form -->
-    <form action="{% url 'convert_mp3' %}" method="POST" id="form">
-        {% csrf_token %}
-        <h1><i class="fab fa-youtube"></i> YouTube 2 MP3 Converter</h1>
-        <h4>Enter the video ID</h4>
-        <div>
-            <input type="text" name="video_id" placeholder="Video ID..."><button id="submit-btn">Convert</button>
-        </div>
-    </form>
+<div class="container-fluid margin-container" style="padding-top: 120px;">
     
-    <!-- Response Display -->
-    <div class="bottom-container">
-        {% if success %}
-            <div class="success">
-                <p>{{ song_title }}</p>
-                <a href="{{ song_link }}"><button id="download-btn">DOWNLOAD</button></a>
-            </div>
-        {% elif not success %}
-            <div class="errors">
-                <p>{{ message }}</p>
-            </div>
-        {% endif %}
+    <div id="file-drop-container" class="file-drop-container">
+        <h2>Upload Audio File</h2>
+        <p id="drag-text">Drag and drop your audio file here</p>
     </div>
 
+    <script>
+        const fileDropContainer = document.getElementById("file-drop-container");
+        const dragText = document.getElementById("drag-text");
+    
+        fileDropContainer.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            fileDropContainer.classList.add("drag-over");
+        });
+    
+        fileDropContainer.addEventListener("dragleave", () => {
+            fileDropContainer.classList.remove("drag-over");
+        });
+    
+        fileDropContainer.addEventListener("drop", async (e) => {
+            e.preventDefault();
+            fileDropContainer.classList.remove("drag-over");
+    
+            const files = e.dataTransfer.files;
+            const formData = new FormData();
+    
+            for (const file of files) {
+                formData.append("audioFile", file);
+            }
+    
+            try {
+                const response = await fetch("/your-upload-endpoint/", {
+                    method: "POST",
+                    body: formData,
+                });
+    
+                if (response.ok) {
+                    // Handle successful response here
+                } else {
+                    // Handle error response here
+                }
+            } catch (error) {
+                // Handle fetch error here
+            }
+        });
+    
+        fileDropContainer.addEventListener("click", () => {
+            const fileInput = document.createElement("input");
+            fileInput.type = "file";
+            fileInput.style.display = "none";
+            fileInput.addEventListener("change", async () => {
+                const files = fileInput.files;
+                const formData = new FormData();
+    
+                for (const file of files) {
+                    formData.append("audioFile", file);
+                }
+    
+                try {
+                    const response = await fetch("/your-upload-endpoint/", {
+                        method: "POST",
+                        body: formData,
+                    });
+    
+                    if (response.ok) {
+                        // Handle successful response here
+                    } else {
+                        // Handle error response here
+                    }
+                } catch (error) {
+                    // Handle fetch error here
+                }
+            });
+    
+            fileInput.click();
+        });
+    </script>
+    
+    <form action="{% url 'convert_mp3' %}" method="POST" id="form">
+        {% csrf_token %}
+        <h1><i class="fab fa-youtube"></i> Youtube Link</h1>
+        <h4>Enter video URL</h4>
+        <div>
+            <input type="text" name="video_id" placeholder="Video ID...">
+            <button id="submit-btn">Convert</button>
+        </div>
+    </form>
+
+    <div id="error-message" class="errors" style="display: none;"></div>
+
+    <div class="bottom-container">
+        {% if success is not None %}
+            {% if success %}
+                <div class="success">
+                    <p>{{ song_title }}</p>
+                    <p>File Size: {% if file_size_mb %}{{ file_size_mb|floatformat:2 }} MB{% else %}N/A{% endif %}</p>
+                    <a href="{{ song_link }}"><button id="download-btn">DOWNLOAD</button></a>
+                </div>
+            {% else %}
+                <div class="errors">
+                    <p>{{ message }}</p>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+    
     <div class="container-fluid" style="padding-top: 70px;"></div>
     <h2>Select Your Ai</h2>
     <select class="form-select">
@@ -52,4 +127,24 @@
         <!-- Add more options as needed -->
     </select>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("form");
+        const submitButton = document.getElementById("submit-btn");
+        const errorMessage = document.getElementById("error-message");
+
+        form.addEventListener("submit", function (event) {
+            const videoIdInput = document.querySelector("input[name='video_id']");
+
+            if (!videoIdInput.value.trim()) {
+                event.preventDefault();
+                errorMessage.textContent = "Please enter a YouTube link";
+                errorMessage.style.display = "block";
+            } else {
+                errorMessage.style.display = "none";
+            }
+        });
+    });
+</script>
 {% endblock body %}

@@ -40,9 +40,6 @@ def sample(request):
     return render(request, 'uiDesign.html', context)
 
 
-
-
-
 def mp3_conversion(video_id, api_key, api_host):
     api_key = settings.API_KEY
     api_host = settings.API_HOST
@@ -75,27 +72,45 @@ def extract_video_id(url):
         return None
 
 def convert_mp3(request):
-    form = VideoIdForm(request.POST)
-    if form.is_valid():
-        youtube_url = form.cleaned_data['video_id']  # Get the YouTube URL from the form
+    if request.method == 'POST':
+        form = VideoIdForm(request.POST)
+        if form.is_valid():
+            youtube_url = form.cleaned_data['video_id']
+            if not youtube_url.strip():
+                return render(request, 'uiDesign.html', {'success': False, 'message': 'Please enter a YouTube link'})
 
-        # Extract the video ID from the URL using the updated function
-        video_id = extract_video_id(youtube_url)
-        
-        if video_id:
-            api_key = settings.API_KEY
-            api_host = settings.API_HOST
+            video_id = extract_video_id(youtube_url)
+            if video_id:
+                api_key = settings.API_KEY
+                api_host = settings.API_HOST
 
-            response = mp3_conversion(video_id, api_key, api_host)
+                response = mp3_conversion(video_id, api_key, api_host)
 
-            if response.get('status') == 'ok':
-                return render(request, 'uiDesign.html', {'success': True,
-                                                         'song_title': response.get('title'),
-                                                         'song_link': response.get('link')})
+                if response.get('status') == 'ok':
+                    song_title = response.get('title')
+                    song_link = response.get('link')
+                    
+                    # Get file size in MB
+                    try:
+                        response_head = requests.head(song_link)
+                        file_size_bytes = int(response_head.headers['Content-Length'])
+                        file_size_mb = file_size_bytes / (1024 * 1024)
+                    except:
+                        file_size_mb = None
+                    
+                    return render(request, 'uiDesign.html', {'success': True,
+                                                             'song_title': song_title,
+                                                             'song_link': song_link,
+                                                             'file_size_mb': file_size_mb})
+                else:
+                    error_message = response.get('msg')
+                    return render(request, 'uiDesign.html', {'success': False, 'message': error_message})
             else:
-                return render(request, 'uiDesign.html', {'success': False, 'message': response.get('msg')})
-        else:
-            return render(request, 'uiDesign.html', {'success': False, 'message': 'Invalid YouTube URL'})
+                return render(request, 'uiDesign.html', {'success': False, 'message': 'Invalid YouTube URL'})
+    else:
+        form = VideoIdForm()
 
     return render(request, 'uiDesign.html', {'form': form})
-             
+
+
+
