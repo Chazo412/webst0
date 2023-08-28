@@ -72,8 +72,8 @@
 
   .custom-button0 {
     background-color: rgba(52, 58, 64, 1);
-    border-color: rgba(52, 58, 64, 1); 
-    color: #ffffff;
+    border-color: rgba(52, 58, 64, 1);
+    color: #060606;
     font-weight: bold;
 }
 
@@ -87,6 +87,8 @@
 }
 
 #download-btn{
+
+=======
   width: 150px;
   color: black;
   padding: 12px;
@@ -110,13 +112,17 @@
   border: 1px solid  lightgray;
   transform: scale(1.1);
 }
+.hidden-on-error {
+  display: block;
+}
 
-.errors{
+.errors {
   width: 400px;
-  margin: auto;
+  margin:auto;
+  margin-top: 20px ;
   display: flex;
   justify-content: center;
-  align-items:center;
+  align-items: center;
   flex-direction: column;
   gap: 10px;
   border-radius: 5px;
@@ -124,15 +130,19 @@
   color: red;
   background-color: #ffe6e6;
   border: 1px solid red;
+  position: relative;
+  z-index: 3;
 }
 
 .success{
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
   gap: 10px;
   color: black;
+  z-index: 1;
 }
 
 #download-btn:hover{
@@ -143,14 +153,12 @@
 }
 #form{
   width: 600px;
-  height: 40vh;
   margin: auto;
   display: flex;
-  justify-content: flex-end;
   align-items: center;
   flex-direction: column;
   gap: 10px;
-  padding-top: 20px;
+  padding-top: 10px;
 }
 
 #form h1{
@@ -205,4 +213,37 @@
   #form input{
     width: 50%;
   }
+}
+
+.file-drop-container {
+  border: 2px dashed #ccc;
+  width: 600px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 10px;
+  background-color: aquamarine;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Add transition effect for smooth hover */
+}
+
+.file-drop-container:hover {
+  background-color: #f0f0f0; /* Change background color on hover */
+  border-color: #333; /* Adjust border color on hover */
+}
+
+.file-drop-container.drag-over {
+  background-color: #f0f0f0;
+  border-color: #333;
+}
+
+#drag-text {
+  display: none;
+  font-weight: bold;
+}
+
+.file-drop-container.drag-over #drag-text {
+  display: block;
 }
