@@ -83,7 +83,7 @@ def convert_mp3(request):
                 if response.get('status') == 'ok':
                     song_title = response.get('title')
                     song_link = response.get('link')
-                    
+                    converted_audio_url = response.get('converted_audio_link')
                     # Get file size in MB
                     try:
                         response_head = requests.head(song_link)
@@ -95,7 +95,8 @@ def convert_mp3(request):
                     return render(request, 'uiDesign.html', {'success': True,
                                                              'song_title': song_title,
                                                              'song_link': song_link,
-                                                             'file_size_mb': file_size_mb})
+                                                             'file_size_mb': file_size_mb,
+                                                             'converted_audio_url': converted_audio_url})
                 else:
                     error_message = response.get('msg')
                     return render(request, 'uiDesign.html', {'success': False, 'message': error_message})
@@ -124,6 +125,34 @@ def convert_mp3(request):
         form = VideoIdForm()
 
     return render(request, 'uiDesign.html', {'form': form})
+
+def download_converted_audio(request):
+    if request.method == 'POST':
+        converted_audio_url = request.POST.get('converted_audio_url')
+        if converted_audio_url:
+            # For demonstration purposes, let's assume the file is saved to 'accepted_audio' folder with a random name
+            save_path = os.path.join(settings.MEDIA_ROOT, 'accepted_audio')
+            os.makedirs(save_path, exist_ok=True)
+
+            # Construct the full file path
+            file_name = f'converted_audio_{int(time.time())}.mp3'
+            file_path = os.path.join(save_path, file_name)
+
+            # Download the file from the URL and save it
+            response = requests.get(converted_audio_url)
+            if response.ok:
+                with open(file_path, 'wb') as f:
+                    f.write(response.content)
+
+                # Prepare success message
+                success_message = "File downloaded and saved successfully."
+
+                # Render the template with the success message
+                return render(request, 'uiDesign.html', {'success_message': success_message})
+            else:
+                return JsonResponse({'message': 'Failed to download the file'})
+        else:
+            return JsonResponse({'message': 'No converted audio URL provided'})
 
 
 
