@@ -58,6 +58,13 @@
 
     <!-- Response Display -->
     <div class="bottom-container">
+
+    {% if success_message %}
+        <div class="success">
+            <p>{{ success_message }}</p>
+        </div>
+    {% endif %}
+    
     {% if success is not None %}
         {% if success %}
             <div class="success">
@@ -76,11 +83,6 @@
         {% endif %}
     {% endif %}
 
-    {% if success_message %}
-    <div class="success">
-        <p>{{ success_message }}</p>
-    </div>
-    {% endif %}
     </div>
 
     <div class="container-fluid" style="padding-top: 70px;"></div>
@@ -123,6 +125,15 @@
     });
     </script>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            if (window.location.pathname.endsWith('/download_converted_audio/')) {
+                // Remove the "/download_converted_audio/" from the URL
+                const newUrl = window.location.pathname.replace('/download_converted_audio/', '/');
+                window.history.pushState(null, null, newUrl);
+            }
+        });
+    </script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -135,6 +146,7 @@
             fileDropContainer.addEventListener("dragover", (e) => {
                 e.preventDefault();
                 fileDropContainer.classList.add("drag-over");
+                errorMessage.style.display = "none";
             });
 
             fileDropContainer.addEventListener("dragleave", () => {
@@ -151,6 +163,7 @@
                     droppedFile = files[0];
                     fileDropContainer.innerHTML = `<h4>File selected: ${droppedFile.name}</h4>`;
                     triggerUploadButton.style.display = "block";
+                    errorMessage.style.display = "none";
                 }
             });
 

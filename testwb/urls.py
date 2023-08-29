@@ -22,6 +22,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.dropUpload, name='dropUpload'),
     path('convert-mp3', views.convert_mp3, name='convert_mp3'),
-    path('download_converted_audio/', views.download_converted_audio, name='download_converted_audio'),
+    path('', views.download_converted_audio),
+    path('download_converted_audio/', views.download_converted_audio, name='download_converted_audio')
+      # Map the default page to the same view
+
 ]
 
