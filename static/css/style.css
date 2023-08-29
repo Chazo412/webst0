@@ -73,7 +73,7 @@
   .custom-button0 {
     background-color: rgba(52, 58, 64, 1);
     border-color: rgba(52, 58, 64, 1);
-    color: #060606;
+    color: #fafafa;
     font-weight: bold;
 }
 
@@ -86,32 +86,7 @@
     width: 75%; /* Set the width to your desired value */
 }
 
-#download-btn{
 
-=======
-  width: 150px;
-  color: black;
-  padding: 12px;
-  color: white;
-  background-color: red;
-  border-radius: 5px;
-  text-decoration: none;
-  box-shadow: 2px 2px 5px gray;
-  font-style: normal;
-  cursor: pointer;
-  letter-spacing: 1px;
-  font-family: inherit;
-  border: 1px solid red;
-  transition: 0.3s ease-out;
-  text-align: center;
-}
-
-#download-btn:hover{
-  color:black;
-  background-color:  white;
-  border: 1px solid  lightgray;
-  transform: scale(1.1);
-}
 .hidden-on-error {
   display: block;
 }
@@ -218,9 +193,11 @@
 .file-drop-container {
   border: 2px dashed #ccc;
   width: 600px;
+  height: 300px;
   margin: auto;
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-direction: column;
   gap: 10px;
   padding-top: 10px;

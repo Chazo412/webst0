@@ -20,7 +20,7 @@ from testweb1 import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.sample, name='sample'),
+    path('', views.dropUpload, name='dropUpload'),
     path('convert-mp3', views.convert_mp3, name='convert_mp3')
 ]
 

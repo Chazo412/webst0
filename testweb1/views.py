@@ -1,15 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from testweb1.forms import audioAccept
-import os
 from django.conf import settings
 from django.http import JsonResponse
 from .forms import VideoIdForm  # Import your VideoIdForm
-import requests
-import time
-import re
+import requests, time, re, os
+from django.views.decorators.cache import cache_page
 
-def sample(request):
+@cache_page(60 * 1) 
+def dropUpload(request):
     if request.method == 'POST':
         form = audioAccept(request.POST, request.FILES)
         if form.is_valid():
@@ -22,13 +21,16 @@ def sample(request):
             # Construct the full file path
             file_name = uploaded_file.name
             file_path = os.path.join(save_path, file_name)
+
+            print("File Name:", file_name)  # Add this line
+            print("File Path:", file_path)  # Add this line
             
             # Save the uploaded file to the desired location
             with open(file_path, 'wb') as destination:
                 for chunk in uploaded_file.chunks():
                     destination.write(chunk)
             
-            # Handle the uploaded file processing here, if needed
+            #return render(request, 'success_template.html')  # Provide a template for success
             
     else:
         form = audioAccept()
