@@ -27,126 +27,62 @@
 <body>
 
     <div class="container-fluid margin-container" style="padding-top: 120px;">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-    
-    <div class="container-fluid margin-container" style="padding-top: 120px;">
         <h2 style="text-align: center; margin-bottom: 0; padding: 20px;">Upload Audio File</h2>
         
-    <!-- File Drop Container -->
-    <div id="file-drop-container" class="file-drop-container">
-        <h4>Drop your audio here</h4>
-        <p id="drag-text">Drag and drop your audio file here</p>
-    </div>
-
-    <!-- Upload Trigger Button -->
-    <button id="trigger-upload-button" class="btn btn-success custom-button0">Upload File</button>
-
-    
-        <!--Javascript code for file-drop-container-->
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const fileDropContainer = document.getElementById("file-drop-container");
-                let droppedFile = null;
-
-                fileDropContainer.addEventListener("dragover", (e) => {
-                    e.preventDefault();
-                    fileDropContainer.classList.add("drag-over");
-                });
-
-                fileDropContainer.addEventListener("dragleave", () => {
-                    fileDropContainer.classList.remove("drag-over");
-                });
-
-                fileDropContainer.addEventListener("drop", (e) => {
-                    e.preventDefault();
-                    fileDropContainer.classList.remove("drag-over");
-                    e.dataTransfer.dropEffect = "copy";
-
-                    const files = e.dataTransfer.files;
-                    if (files.length > 0) {
-                        droppedFile = files[0];
-                        fileDropContainer.innerHTML = `<h4>File selected: ${droppedFile.name}</h4>`;
-                    }
-                });
-
-                const triggerUploadButton = document.getElementById("trigger-upload-button");
-
-        triggerUploadButton.addEventListener("click", async () => {
-            if (droppedFile) {
-                const formData = new FormData();
-                formData.append("audio_file", droppedFile);
-
-                try {
-                    const response = await fetch("{% url 'dropUpload' %}", {
-                        method: "POST",
-                        body: formData,
-                    });
-
-                            if (response.ok) {
-                                console.log("File uploaded successfully");
-                                fileDropContainer.innerHTML = `<h4>Upload successful: ${droppedFile.name}</h4>`;
-                                droppedFile = null;
-                                uploadButton.style.display = "none";
-                            } else {
-                                console.error("File upload failed");
-                            }
-                            } catch (error) {
-                                console.error("Fetch error:", error);
-                                }
-                        }
-                    });
-                });
-
-        </script>
-        
-    
-        <div id="error-message" class="errors" style="display: none;"></div>
-    
-        <div><h1 style="text-align: center">OR</h1></div>
-    </div>
-    
-
-
-
-        <!-- YouTube 2 MP3 Converter Form -->
-        {% if not success_convert %}
-        <form action="{% url 'convert_mp3' %}" method="POST" id="form">
-            {% csrf_token %}
-            <h1><i class="fab fa-youtube"></i> Enter the Youtube URL</h1>
-            <div>
-                <input type="text" name="video_id" placeholder="Youtube URL"><button id="submit-btn">Convert</button>
-            </div>
-        </form>
-        {% endif %}
-
-        <!-- Response Display -->
-        <div class="bottom-container">
-            {% if success is not None %}
-                {% if success %}
-                    <div class="success">
-                        <p>{{ song_title }}</p>
-                        <p>File Size: {% if file_size_mb %}{{ file_size_mb|floatformat:2 }} MB{% else %}N/A{% endif %}</p>
-                        <a href="{{ song_link }}"><button id="download-btn">DOWNLOAD</button></a>
-                    </div>
-                {% else %}
-                    <div class="errors">
-                        <p>{{ message }}</p>
-                    </div>
-                {% endif %}
-            {% endif %}
+        <!-- File Container -->
+        <div id="file-drop-container" class="file-drop-container">
+            <h4>Drop your audio here</h4>
+            <p id="drag-text">Drag and drop your audio file here</p>
         </div>
+    
+        <!-- Trigger Button -->
+        <button id="trigger-upload-button" class="btn btn-success custom-button0" style="display: none;">Upload File</button>
+        
+        <div id="error-message" class="errors" style="display: none;"></div>
+    </div>
+    
+    <div><h1 style="text-align: center">OR</h1></div>
 
-        <div class="container-fluid" style="padding-top: 70px;"></div>
-        <h2>Select Your Ai</h2>
-        <select class="form-select">
-            <option value="file1">Spongebob</option>
-            <option value="file2">Patrick</option>
-            <option value="file3">Squidward</option>
-            <option value="file4">Plankton</option>
-            <option value="file5">Mr.Krabs</option>
-            <option value="file6">Madea</option>
-            <!-- Add more options as needed -->
-        </select>
+    <!-- YouTube 2 MP3 Converter Form -->
+    {% if not success_convert %}
+    <form action="{% url 'convert_mp3' %}" method="POST" id="form">
+        {% csrf_token %}
+        <h1><i class="fab fa-youtube"></i> Enter the Youtube URL</h1>
+        <div>
+            <input type="text" name="video_id" placeholder="Youtube URL"><button id="submit-btn">Convert</button>
+        </div>
+    </form>
+    {% endif %}
+
+    <!-- Response Display -->
+    <div class="bottom-container">
+        {% if success is not None %}
+            {% if success %}
+                <div class="success">
+                    <p>{{ song_title }}</p>
+                    <p>File Size: {% if file_size_mb %}{{ file_size_mb|floatformat:2 }} MB{% else %}N/A{% endif %}</p>
+                    <a href="{{ song_link }}"><button id="download-btn">DOWNLOAD</button></a>
+                </div>
+            {% else %}
+                <div class="errors">
+                    <p>{{ message }}</p>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+
+    <div class="container-fluid" style="padding-top: 70px;"></div>
+    <h2>Select Your Ai</h2>
+    <select class="form-select">
+        <option value="file1">Spongebob</option>
+        <option value="file2">Patrick</option>
+        <option value="file3">Squidward</option>
+        <option value="file4">Plankton</option>
+        <option value="file5">Mr.Krabs</option>
+        <option value="file6">Madea</option>
+        <!-- Add more options as needed -->
+    </select>
+    </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -168,7 +104,70 @@
         });
     </script>
 
-    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const fileDropContainer = document.getElementById("file-drop-container");
+            const triggerUploadButton = document.getElementById("trigger-upload-button");
+
+            let droppedFile = null;
+
+            // File Drop Container Events
+            fileDropContainer.addEventListener("dragover", (e) => {
+                e.preventDefault();
+                fileDropContainer.classList.add("drag-over");
+            });
+
+            fileDropContainer.addEventListener("dragleave", () => {
+                fileDropContainer.classList.remove("drag-over");
+            });
+
+            fileDropContainer.addEventListener("drop", (e) => {
+                e.preventDefault();
+                fileDropContainer.classList.remove("drag-over");
+                e.dataTransfer.dropEffect = "copy";
+
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    droppedFile = files[0];
+                    fileDropContainer.innerHTML = `<h4>File selected: ${droppedFile.name}</h4>`;
+                    triggerUploadButton.style.display = "block";
+                }
+            });
+
+            // Trigger Button Event
+            triggerUploadButton.addEventListener("click", async () => {
+                if (droppedFile) {
+                    const formData = new FormData();
+                    formData.append("audio_file", droppedFile);
+
+                    // Get the CSRF token from the page
+                    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                    formData.append('csrfmiddlewaretoken', csrfToken);
+
+                    try {
+                        const response = await fetch("{% url 'dropUpload' %}", {
+                            method: "POST",
+                            body: formData,
+                        });
+
+                        if (response.ok) {
+                            console.log("File uploaded successfully");
+                            fileDropContainer.innerHTML = `<h4>Upload successful: ${droppedFile.name}</h4>`;
+                            droppedFile = null;
+                            triggerUploadButton.style.display = "none";
+                        } else {
+                            console.error("File upload failed");
+                        }
+                    } catch (error) {
+                        console.error("Fetch error:", error);
+                    }
+                }
+            });
+
+        });
+    </script>
+
 </body>
 </html>
 {% endblock body %}

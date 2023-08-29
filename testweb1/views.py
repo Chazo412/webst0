@@ -8,35 +8,30 @@ import requests, time, re, os
 from django.views.decorators.cache import cache_page
 
 @cache_page(60 * 1) 
+
 def dropUpload(request):
     if request.method == 'POST':
-        form = audioAccept(request.POST, request.FILES)
-        if form.is_valid():
-            uploaded_file = form.cleaned_data['audioFile']
-            
+        uploaded_file = request.FILES.get('audio_file')
+
+        if uploaded_file:
             # Determine the path to save the uploaded file
-            save_path = os.path.join(settings.MEDIA_ROOT, 'accepted_Audio')  # 'accepted_Audio' is the subdirectory where you want to save the files
+            save_path = os.path.join(settings.MEDIA_ROOT, 'accepted_audio')  # 'accepted_audio' is the subdirectory where you want to save the files
             os.makedirs(save_path, exist_ok=True)  # Create the directory if it doesn't exist
             
             # Construct the full file path
             file_name = uploaded_file.name
             file_path = os.path.join(save_path, file_name)
 
-            print("File Name:", file_name)  # Add this line
-            print("File Path:", file_path)  # Add this line
-            
             # Save the uploaded file to the desired location
             with open(file_path, 'wb') as destination:
                 for chunk in uploaded_file.chunks():
                     destination.write(chunk)
-            
-            #return render(request, 'success_template.html')  # Provide a template for success
-            
-    else:
-        form = audioAccept()
-    
-    context = {'form': form}
-    return render(request, 'uiDesign.html', context)
+
+            return JsonResponse({'message': 'File uploaded successfully'})
+        else:
+            return JsonResponse({'message': 'No file provided'})
+
+    return render(request, 'uiDesign.html')
 
 
 def mp3_conversion(video_id, api_key, api_host):
